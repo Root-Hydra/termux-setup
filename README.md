@@ -87,12 +87,12 @@ cd termux-setup
 pip install -r requirements.txt
 
 # Run the tool
-python termux_setup.py
+python setup.py
 ```
 
 ### Method 2: One-Line Installation
 ```bash
-pkg update && pkg upgrade -y && pkg install python git -y && git clone https://github.com/Root-Hydra/termux-setup.git && cd termux-setup && pip install rich requests && python termux_setup.py
+pkg update && pkg upgrade -y && pkg install python git -y && git clone https://github.com/Root-Hydra/termux-setup.git && cd termux-setup && pip install rich requests && python setup.py
 ```
 
 ### Method 3: Manual Setup
@@ -105,7 +105,7 @@ pkg install git
 pip install rich requests
 git clone https://github.com/Root-Hydra/termux-setup.git
 cd termux-setup
-python termux_setup.py
+python setup.py
 ```
 ## 🎮 USAGE
 
