@@ -2,7 +2,7 @@
 # TOOL NAME: TERMUX SETUP ADVANCED
 # CREATOR  : ROOT HYDRA
 # TEAM     : BANGLADESH DEVIL CYBER SENTINEL
-# VERSION  : 4.0 (TERMUX OPTIMIZED)
+# VERSION  : 4.0 (ULTIMATE SECURE)
 # PYTHON   : 3.11+
 #__________________| IMPORT MODULES |__________________#
 import os
@@ -25,84 +25,38 @@ from typing import Tuple, Optional, List, Dict, Any
 from dataclasses import dataclass
 from enum import Enum
 
-#__________________| TERMUX DETECTION |__________________#
-def is_termux():
-    """Check if running in Termux"""
-    return any([
-        'com.termux' in os.environ.get('PREFIX', ''),
-        os.path.exists('/data/data/com.termux'),
-        'TERMUX_VERSION' in os.environ
-    ])
-
-TERMUX = is_termux()
-
-#__________________| RICH LIBRARY SETUP |__________________#
-if TERMUX:
-    # Termux-এ সহজ কনফিগারেশন
-    os.environ['TERM'] = 'xterm-256color'
-    os.environ['COLORTERM'] = 'truecolor'
-    
-    try:
-        from rich.console import Console
-        from rich import print
-        from rich.panel import Panel
-        from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TimeElapsedColumn
-        from rich.table import Table
-        from rich.text import Text
-        from rich.style import Style
-        from rich.prompt import Prompt
-        
-        # Termux-এর জন্য Console কনফিগারেশন
-        console = Console(
-            force_terminal=True,
-            color_system="truecolor",
-            width=60  # Termux-এর জন্য ছোট width
-        )
-    except ImportError:
-        os.system('pip install rich requests urllib3')
-        from rich.console import Console
-        from rich import print
-        from rich.panel import Panel
-        from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TimeElapsedColumn
-        from rich.table import Table
-        from rich.text import Text
-        from rich.style import Style
-        from rich.prompt import Prompt
-        
-        console = Console(force_terminal=True, color_system="truecolor", width=60)
-else:
-    # সাধারণ সিস্টেমের জন্য
-    try:
-        import requests
-        from rich.console import Console
-        from rich import print
-        from rich.panel import Panel
-        from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TimeElapsedColumn
-        from rich.table import Table
-        from rich.layout import Layout
-        from rich.live import Live
-        from rich.text import Text
-        from rich.style import Style
-        from rich.columns import Columns
-        from rich.prompt import Prompt
-        from rich.syntax import Syntax
-        from rich.traceback import install
-        install(show_locals=True)
-        console = Console()
-    except ImportError:
-        os.system('pip install requests rich urllib3')
-        import requests
-        from rich.console import Console
-        from rich import print
-        from rich.panel import Panel
-        from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TimeElapsedColumn
-        from rich.table import Table
-        from rich.text import Text
-        from rich.style import Style
-        from rich.columns import Columns
-        from rich.prompt import Prompt
-        from rich.syntax import Syntax
-        console = Console()
+# Auto-install missing requirements
+try:
+    import requests
+    from rich.console import Console
+    from rich import print
+    from rich.panel import Panel
+    from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TimeElapsedColumn
+    from rich.table import Table
+    from rich.layout import Layout
+    from rich.live import Live
+    from rich.text import Text
+    from rich.style import Style
+    from rich.columns import Columns
+    from rich.prompt import Prompt
+    from rich.syntax import Syntax
+    from rich.traceback import install
+    install(show_locals=True)
+except ImportError:
+    os.system('pip install requests rich urllib3')
+    import requests
+    from rich.console import Console
+    from rich import print
+    from rich.panel import Panel
+    from rich.progress import Progress, SpinnerColumn, TextColumn, BarColumn, TimeElapsedColumn
+    from rich.table import Table
+    from rich.layout import Layout
+    from rich.live import Live
+    from rich.text import Text
+    from rich.style import Style
+    from rich.columns import Columns
+    from rich.prompt import Prompt
+    from rich.syntax import Syntax
 
 from time import localtime as lt
 
@@ -114,30 +68,7 @@ logging.basicConfig(
     datefmt='%Y-%m-%d %H:%M:%S'
 )
 
-#__________________| TERMUX-SPECIFIC STYLES |__________________#
-if TERMUX:
-    # Termux-এর জন্য সিম্পল অক্ষর
-    BULLET = "•"
-    ARROW = "→"
-    LEFT_BRACKET = "["
-    RIGHT_BRACKET = "]"
-    DASH = "-"
-else:
-    # সাধারণ সিস্টেমের জন্য ইউনিকোড অক্ষর
-    BULLET = "【"
-    RIGHT_BULLET = "】"
-    ARROW = "➤"
-    LEFT_BRACKET = "⟨"
-    RIGHT_BRACKET = "⟩"
-    DASH = "—"
-
-# Initial Boot Setup
-os.system("clear")
-print(Panel(f"[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[blue_violet] INITIALIZING SECURE SYSTEM...", 
-            style="bold bright_black", 
-            title=f"<[bold white reverse] WELCOME [/bold white reverse]>"))
-time.sleep(1)
-sys.stdout.write('\x1b]2; TERMUX SETUP ADVANCED™ ULTIMATE SECURE\x07')
+console = Console()
 
 #__________________| CONFIGURATION |__________________#
 CONFIG_FILE = Path.home() / '.termux_setup.cfg'
@@ -474,7 +405,7 @@ def check_dependencies() -> bool:
     if missing:
         print(Panel(f"[yellow]Missing tools: {', '.join(missing)}", 
                    style="bold bright_black",
-                   title=f"<[bold white reverse] WARNING [/bold white reverse]>"))
+                   title="<[bold white reverse] WARNING [/bold white reverse]>"))
         return False
     return True
 
@@ -670,15 +601,15 @@ def __details__():
     packages = get_packages_count()
     
     info_panel = Panel(
-        f"""[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[dark_cyan]DEVICE       [white]{ARROW}  [green]{device}
-[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[dark_cyan]YOUR IP      [white]{ARROW}  [green]{ip}
-[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[dark_cyan]LATENCY      [white]{ARROW}  [green]{ping}
-[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[dark_cyan]STORAGE      [white]{ARROW}  [green]{storage}
-[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[dark_cyan]PACKAGES     [white]{ARROW}  [green]{packages}
-[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[dark_cyan]UPTIME       [white]{ARROW}  [green]{uptime}
-[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[dark_cyan]LOCAL TIME   [white]{ARROW}  [green]{times} - {date}""",
+        f"""[bold black]【[white]•[bold black]】[dark_cyan]DEVICE       [white]➤  [green]{device}
+[bold black]【[white]•[bold black]】[dark_cyan]YOUR IP      [white]➤  [green]{ip}
+[bold black]【[white]•[bold black]】[dark_cyan]LATENCY      [white]➤  [green]{ping}
+[bold black]【[white]•[bold black]】[dark_cyan]STORAGE      [white]➤  [green]{storage}
+[bold black]【[white]•[bold black]】[dark_cyan]PACKAGES     [white]➤  [green]{packages}
+[bold black]【[white]•[bold black]】[dark_cyan]UPTIME       [white]➤  [green]{uptime}
+[bold black]【[white]•[bold black]】[dark_cyan]LOCAL TIME   [white]➤  [green]{times} - {date}""",
         style="bold bright_black",
-        title=f"<[bold white reverse] DYNAMIC DASHBOARD [/bold white reverse]>"
+        title="<[bold white reverse] DYNAMIC DASHBOARD [/bold white reverse]>"
     )
     print(info_panel)
 
@@ -717,17 +648,17 @@ def logo():
 [spring_green2] / / /  __/ /  / / / / / / /_/ />  <  
 [green1]/_/  \\___/_/  /_/ /_/ /_/\\__,_/_/|_|""",
         style="bold bright_black",
-        title=f"<[bold white reverse] BANGLADESH DEVIL CYBER SENTINEL [/bold white reverse]>"
+        title="<[bold white reverse] BANGLADESH DEVIL CYBER SENTINEL [/bold white reverse]>"
     )
     print(logo_panel)
     
     info_panel = Panel(
-        f"""[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[bold yellow] DEVELOPER   [white]{ARROW} [green]Root Hydra  
-[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[bold yellow] TEAM        [white]{ARROW} [green]Bangladesh Devil Cyber Sentinel 
-[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[bold yellow] VERSION     [white]{ARROW} [green]4.0 (Termux Optimized)
-[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[bold yellow] GITHUB      [white]{ARROW} [green]github.com/RootHydra
-[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[bold yellow] SECURITY    [white]{ARROW} [bold green]100% Secure
-[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[bold yellow] TOOL        [white]{ARROW} [bold purple reverse] TERMUX SETUP ADVANCED""",
+        """[bold black]【[white]•[bold black]】[bold yellow] DEVELOPER   [white]➤ [green]Root Hydra  
+[bold black]【[white]•[bold black]】[bold yellow] TEAM        [white]➤ [green]Bangladesh Devil Cyber Sentinel 
+[bold black]【[white]•[bold black]】[bold yellow] VERSION     [white]➤ [green]4.0 (Ultimate Secure)
+[bold black]【[white]•[bold black]】[bold yellow] GITHUB      [white]➤ [green]github.com/RootHydra
+[bold black]【[white]•[bold black]】[bold yellow] SECURITY    [white]➤ [bold green]100% Secure
+[bold black]【[white]•[bold black]】[bold yellow] TOOL        [white]➤ [bold purple reverse] TERMUX SETUP ADVANCED""",
         style="bold bright_black"
     )
     print(info_panel)
@@ -762,7 +693,7 @@ def install_packages(pkg_list: list, is_pip: bool = False):
                 logging.warning(f"Package name sanitized: {pkg} -> {sanitized_pkg}")
                 pkg = sanitized_pkg
             
-            print(Panel(f"\t[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[sea_green2] INSTALLING {pkg.upper()} ", 
+            print(Panel(f"\t[bold black]【[white]•[bold black]】[sea_green2] INSTALLING {pkg.upper()} ", 
                        style="bold bright_black"))
             
             success, output = safe_execute(f"{cmd} {pkg}")
@@ -963,9 +894,9 @@ ADVANCED_PIP_PACKAGES = BASIC_PIP_PACKAGES + [
 def basic_setup():
     """Basic Termux setup with essential packages"""
     clear()
-    print(Panel(f"[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[blue] STARTING BASIC SETUP...", 
+    print(Panel("[bold black]【[white]•[bold black]】[blue] STARTING BASIC SETUP...", 
                 style="bold bright_black",
-                title=f"<[bold white reverse] BASIC SETUP [/bold white reverse]>"))
+                title="<[bold white reverse] BASIC SETUP [/bold white reverse]>"))
     time.sleep(2)
     
     # Create restore point
@@ -1005,9 +936,9 @@ def basic_setup():
 def advanced_setup():
     """Advanced Termux setup with complete packages"""
     clear()
-    print(Panel(f"[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[magenta] STARTING ADVANCED SETUP...", 
+    print(Panel("[bold black]【[white]•[bold black]】[magenta] STARTING ADVANCED SETUP...", 
                 style="bold bright_black",
-                title=f"<[bold white reverse] ADVANCED SETUP [/bold white reverse]>"))
+                title="<[bold white reverse] ADVANCED SETUP [/bold white reverse]>"))
     time.sleep(2)
     
     # Create restore point
@@ -1033,7 +964,7 @@ def advanced_setup():
     install_packages(ADVANCED_PIP_PACKAGES, True)
     
     # Test network speed
-    print(Panel(f"[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[sea_green2] Testing network speed...", 
+    print(Panel("[bold black]【[white]•[bold black]】[sea_green2] Testing network speed...", 
                style="bold bright_black"))
     speed_results = test_network_speed()
     if speed_results['speed'] != 'N/A':
@@ -1209,13 +1140,13 @@ def custom_banner():
         show_banner_styles()
         
         options = Panel(
-            f"""[bold black]{LEFT_BRACKET}[white]01-10{RIGHT_BRACKET}[dark_slate_gray3] SELECT BANNER STYLE (1-10)
-[bold black]{LEFT_BRACKET}[white]P{RIGHT_BRACKET}[dark_slate_gray3] PREVIEW ALL STYLES
-[bold black]{LEFT_BRACKET}[white]T{RIGHT_BRACKET}[dark_slate_gray3] TEST WITH YOUR NAME
-[bold black]{LEFT_BRACKET}[white]R{RIGHT_BRACKET}[dark_slate_gray3] REMOVE CURRENT BANNER
-[bold black]{LEFT_BRACKET}[white]00{RIGHT_BRACKET}[red1] BACK TO MAIN MENU""",
+            """[bold black]【[white]01-10[bold black]】[dark_slate_gray3] SELECT BANNER STYLE (1-10)
+[bold black]【[white]P[bold black]】[dark_slate_gray3] PREVIEW ALL STYLES
+[bold black]【[white]T[bold black]】[dark_slate_gray3] TEST WITH YOUR NAME
+[bold black]【[white]R[bold black]】[dark_slate_gray3] REMOVE CURRENT BANNER
+[bold black]【[white]00[bold black]】[red1] BACK TO MAIN MENU""",
             style="bold bright_black",
-            title=f"<[bold white reverse] BANNER STYLE SELECTOR [/bold white reverse]>"
+            title="<[bold white reverse] BANNER STYLE SELECTOR [/bold white reverse]>"
         )
         print(options)
         
@@ -1284,9 +1215,9 @@ def custom_banner():
 def system_optimizer():
     """Optimize system performance"""
     clear()
-    print(Panel(f"[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[blue] OPTIMIZING SYSTEM...", 
+    print(Panel("[bold black]【[white]•[bold black]】[blue] OPTIMIZING SYSTEM...", 
                 style="bold bright_black",
-                title=f"<[bold white reverse] OPTIMIZER [/bold white reverse]>"))
+                title="<[bold white reverse] OPTIMIZER [/bold white reverse]>"))
     
     optimizations = [
         ("Cleaning package cache", "apt clean && apt autoclean"),
@@ -1315,7 +1246,7 @@ def system_optimizer():
             progress.advance(task)
     
     # Test network speed
-    print(Panel(f"[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[sea_green2] Testing network speed...", 
+    print(Panel("[bold black]【[white]•[bold black]】[sea_green2] Testing network speed...", 
                style="bold bright_black"))
     speed_results = test_network_speed()
     if speed_results['speed'] != 'N/A':
@@ -1332,9 +1263,9 @@ def system_optimizer():
 def verify_installation():
     """Verify installed packages and system integrity"""
     clear()
-    print(Panel(f"[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[blue] VERIFYING INSTALLATION...", 
+    print(Panel("[bold black]【[white]•[bold black]】[blue] VERIFYING INSTALLATION...", 
                 style="bold bright_black",
-                title=f"<[bold white reverse] VERIFICATION [/bold white reverse]>"))
+                title="<[bold white reverse] VERIFICATION [/bold white reverse]>"))
     
     results = []
     
@@ -1380,9 +1311,9 @@ def verify_installation():
 def export_system_info():
     """Export system information to file"""
     clear()
-    print(Panel(f"[bold black]{LEFT_BRACKET}{BULLET}{RIGHT_BRACKET}[blue] EXPORTING SYSTEM INFO...", 
+    print(Panel("[bold black]【[white]•[bold black]】[blue] EXPORTING SYSTEM INFO...", 
                 style="bold bright_black",
-                title=f"<[bold white reverse] EXPORT [/bold white reverse]>"))
+                title="<[bold white reverse] EXPORT [/bold white reverse]>"))
     
     timestamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     filename = f"system_info_{timestamp}.json"
@@ -1430,8 +1361,8 @@ def export_system_info():
 def about_credits():
     """Display about and credits information"""
     clear()
-    about_text = f"""
-[bold cyan]TERMUX SETUP ADVANCED v4.0 (Termux Optimized)[/bold cyan]
+    about_text = """
+[bold cyan]TERMUX SETUP ADVANCED v4.0 (Ultimate Secure)[/bold cyan]
 
 [green]Created by:[/green] Root Hydra
 [green]Team:[/green] Bangladesh Devil Cyber Sentinel
@@ -1457,14 +1388,14 @@ def about_credits():
 • [green]✓[/green] Session management - Unique tokens per session
 
 [bold magenta]GitHub:[/bold magenta] github.com/RootHydra
-[bold magenta]Version:[/bold magenta] 4.0 (Termux Optimized)
+[bold magenta]Version:[/bold magenta] 4.0 (Ultimate Secure)
 [bold magenta]Security:[/bold magenta] 100% Secure
 
 [bold green]All values shown in green[/bold green]
 [italic]Stay secure, stay dangerous![/italic]
 """
     print(Panel(about_text, style="bold bright_black", 
-               title=f"<[bold white reverse] ABOUT [/bold white reverse]>"))
+               title="<[bold white reverse] ABOUT [/bold white reverse]>"))
     console.input("\n[bold bright_black]   ╰─>[white] Press Enter to return...")
     menu()
 
@@ -1475,16 +1406,16 @@ def menu():
     __details__()
     
     menu_options = Panel(
-        f"""[bold black]{LEFT_BRACKET}[white]01{RIGHT_BRACKET}[blue] BASIC SETUP (Essential Packages)
-[bold black]{LEFT_BRACKET}[white]02{RIGHT_BRACKET}[magenta] ADVANCED SETUP (Complete Environment)
-[bold black]{LEFT_BRACKET}[white]03{RIGHT_BRACKET}[dark_slate_gray3] CUSTOM BANNER (10+ Styles)
-[bold black]{LEFT_BRACKET}[white]04{RIGHT_BRACKET}[dark_slate_gray3] SYSTEM OPTIMIZER
-[bold black]{LEFT_BRACKET}[white]05{RIGHT_BRACKET}[dark_slate_gray3] VERIFY INSTALLATION
-[bold black]{LEFT_BRACKET}[white]06{RIGHT_BRACKET}[dark_slate_gray3] EXPORT SYSTEM INFO
-[bold black]{LEFT_BRACKET}[white]07{RIGHT_BRACKET}[dark_slate_gray3] ABOUT & CREDITS
-[bold black]{LEFT_BRACKET}[white]00{RIGHT_BRACKET}[red1] EXIT PROGRAM""",
+        """[bold black]【[white]01[bold black]】[blue] BASIC SETUP (Essential Packages)
+[bold black]【[white]02[bold black]】[magenta] ADVANCED SETUP (Complete Environment)
+[bold black]【[white]03[bold black]】[dark_slate_gray3] CUSTOM BANNER (10+ Styles)
+[bold black]【[white]04[bold black]】[dark_slate_gray3] SYSTEM OPTIMIZER
+[bold black]【[white]05[bold black]】[dark_slate_gray3] VERIFY INSTALLATION
+[bold black]【[white]06[bold black]】[dark_slate_gray3] EXPORT SYSTEM INFO
+[bold black]【[white]07[bold black]】[dark_slate_gray3] ABOUT & CREDITS
+[bold black]【[white]00[bold black]】[red1] EXIT PROGRAM""",
         style="bold bright_black",
-        title=f"<[bold white reverse] MAIN MENU [/bold white reverse]>"
+        title="<[bold white reverse] MAIN MENU [/bold white reverse]>"
     )
     print(menu_options)
     
@@ -1506,10 +1437,10 @@ def menu():
     elif option in ['7','07']:
         about_credits()
     elif option in ['00','0']:
-        print(Panel(f"[bold black]{LEFT_BRACKET}[white]={RIGHT_BRACKET}[bold blue] STAY SECURE. EXITING...\n"
-                   f"[bold black]{LEFT_BRACKET}[white]={RIGHT_BRACKET}[bold blue] THANKS FOR USING ROOT HYDRA'S TOOLS!", 
+        print(Panel("[bold black]【[white]=[bold black]】[bold blue] STAY SECURE. EXITING...\n"
+                   "[bold black]【[white]=[bold black]】[bold blue] THANKS FOR USING ROOT HYDRA'S TOOLS!", 
                    style="bold bright_black", 
-                   title=f"<[bold white reverse] EXIT [/bold white reverse]>"))
+                   title="<[bold white reverse] EXIT [/bold white reverse]>"))
         logging.info("Session ended securely")
         
         # Clean up sensitive data
@@ -1521,19 +1452,14 @@ if __name__ == "__main__":
     try:
         logging.info("Secure session started")
         
+        # সরাসরি মেনুতে যান - কোন Welcome মেসেজ দেখাবেন না
+        os.system("clear")
+        
         # Verify security configuration
         if not check_dependencies():
             print(Panel("[yellow]Some dependencies missing. Continuing anyway...", 
                        style="bold bright_black"))
-        
-        # Display security notice
-        if TERMUX:
-            print(Panel("[bold green]TERMUX MODE: Optimized for Termux | All styles working!", 
-                       style="bold bright_black"))
-        else:
-            print(Panel("[bold green]SECURITY ENABLED: Command whitelist | Input sanitization | Path protection | Rate limiting", 
-                       style="bold bright_black"))
-        time.sleep(2)
+            time.sleep(1)
         
         menu()
         
