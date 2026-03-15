@@ -60,6 +60,22 @@ except ImportError:
 
 from time import localtime as lt
 
+#__________________| TERMUX DETECTION |__________________#
+def is_termux():
+    """Check if running in Termux"""
+    return any([
+        'com.termux' in os.environ.get('PREFIX', ''),
+        os.path.exists('/data/data/com.termux'),
+        'TERMUX_VERSION' in os.environ
+    ])
+
+TERMUX = is_termux()
+
+if TERMUX:
+    # Termux-এ TrueColor সাপোর্ট এনাবল
+    os.environ['TERM'] = 'xterm-256color'
+    os.environ['COLORTERM'] = 'truecolor'
+
 # Setup logging
 logging.basicConfig(
     filename='termux_setup.log',
@@ -782,6 +798,9 @@ BASIC_PACKAGES = [
     
     # Enhanced utilities
     "bat", "exa", "fd", "zoxide", "fzf",
+    
+    # Banner setup packages (নতুন যোগ করা)
+    "figlet", "toilet", "cowsay", "lolcat", "ruby", "gem",
 ]
 
 ADVANCED_PACKAGES = BASIC_PACKAGES + [
@@ -909,8 +928,11 @@ def basic_setup():
     safe_execute("pkg upgrade -y")
     safe_execute("termux-setup-storage")
     
-    # Install essential packages
+    # Install essential packages (Banner packages included)
     install_packages(BASIC_PACKAGES, False)
+    
+    # Install Ruby gems for banner
+    safe_execute("gem install lolcat")
     
     # Upgrade pip
     safe_execute("pip install --upgrade pip")
@@ -954,6 +976,9 @@ def advanced_setup():
     
     # Install all packages
     install_packages(ADVANCED_PACKAGES, False)
+    
+    # Install Ruby gems for banner
+    safe_execute("gem install lolcat")
     
     # Upgrade all pip
     safe_execute("pip install --upgrade pip")
@@ -1270,7 +1295,7 @@ def verify_installation():
     results = []
     
     # Check essential commands
-    essentials = ['python', 'pip', 'git', 'curl', 'wget', 'nano']
+    essentials = ['python', 'pip', 'git', 'curl', 'wget', 'nano', 'figlet', 'lolcat']
     
     for cmd in essentials:
         success, result = safe_execute(f"which {cmd}")
@@ -1452,7 +1477,7 @@ if __name__ == "__main__":
     try:
         logging.info("Secure session started")
         
-        # সরাসরি মেনুতে যান - কোন Welcome মেসেজ দেখাবেন না
+        # সরাসরি মেনুতে যান
         os.system("clear")
         
         # Verify security configuration
